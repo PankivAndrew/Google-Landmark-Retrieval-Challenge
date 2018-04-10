@@ -5,38 +5,42 @@ import os
 import numpy as np
 from matplotlib import pyplot as plt
 
-directory = "../../test_images/"
-num_elements = len([name for name in os.listdir(directory)])
+root_directory = "../../test_images/"
 
-similarity_matrix = np.zeros((num_elements, num_elements))
-# print(similarity_matrix)
-rs = RootSIFT()
-for i, filename_1 in enumerate(os.listdir(directory)):
-    image_1 = cv2.imread(directory + filename_1)
-    # extract RootSIFT descriptors
-    kp1, des1 = rs.detectAndCompute(image_1, None)
-    for j, filename_2 in enumerate(os.listdir(directory)):
-        print(i, j)
-        if filename_1 == filename_2:
-            pass
-        else:
-            image_2 = cv2.imread(directory + filename_2)
-            # extract RootSIFT descriptors
-            kp2, des2 = rs.detectAndCompute(image_2, None)
 
-            # BFMatcher with default params
-            bf = cv2.BFMatcher()
-            matches = bf.knnMatch(des1, des2, k=2)
+def get_matches(des1, des2):
+    # BFMatcher with default params
+    matches = cv2.BFMatcher().knnMatch(des1, des2, k=2)
 
-            # Apply ratio test
-            good = []
-            for m, n in matches:
-                if m.distance < 0.75 * n.distance:
-                    good.append([m])
-            num_of_matches = len(good)
-            similarity_matrix[i][j] = num_of_matches
+    # Apply ratio test
+    matches = [[m] for m, n in matches if m.distance < 0.75 * n.distance]
+    return len(matches)
 
-print(similarity_matrix)
+
+def calculate_similarity_matrix(directory):
+    num_elements = len([name for name in os.listdir(directory)])
+    similarity_matrix = np.zeros((num_elements, num_elements))
+
+    rs = RootSIFT()
+    for i, filename_1 in enumerate(os.listdir(directory)):
+        image_1 = cv2.imread(directory + filename_1)
+        # extract RootSIFT descriptors
+        kp1, des1 = rs.detectAndCompute(image_1, None)
+        for j, filename_2 in enumerate(os.listdir(directory)):
+            print(i, j)
+            if filename_1 == filename_2:
+                pass
+            else:
+                image_2 = cv2.imread(directory + filename_2)
+                # extract RootSIFT descriptors
+                kp2, des2 = rs.detectAndCompute(image_2, None)
+
+                similarity_matrix[i][j] = get_matches(des1, des2)
+
+    return similarity_matrix
+
+
+print(calculate_similarity_matrix(root_directory))
 #
 #
 #
@@ -65,18 +69,6 @@ print(similarity_matrix)
 #         print(len(good))
 #     else:
 #         pass
-
-
-
-
-
-
-
-
-
-
-
-
 
 # # load the image we are going to extract descriptors from and convert
 # # it to grayscale
