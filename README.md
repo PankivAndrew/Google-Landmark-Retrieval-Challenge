@@ -13,11 +13,17 @@ Image retrieval is a fundamental problem in computer vision: given a query image
 * Python 3
 * ImageHash
 * PIL
+* numpy
+* scipy
+* sklearn
+* pandas
 
 ## Evaluation 
-* Evaluation
+* Hammin distance
+* Our own metric SummOne
 * Normalized hamming distance
 * Equality Percentage (EP)
+* mean Average Precision @ 100 mAP#100
 
 ## Our own similarity metric, which we considered the right choice for our algorithm.
 Here is how it works. Calculate the hamming distance of every pair with the next logic: IF 1 - diff(h11, h21) > t = 1 else 0, where t is a threshold established for particular hash function. 
