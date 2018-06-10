@@ -23,9 +23,6 @@ Image retrieval is a fundamental problem in computer vision: given a query image
 Here is how it works. Calculate the hamming distance of every pair with the next logic: IF 1 - diff(h11, h21) > t = 1 else 0, where t is a threshold established for particular hash function. 
 After comparison of every pair, we get a binary array of the length M. Distance would be the sum of ones in the binary array.
 
-## Full report
-(Google Landmark Retrieval Challenge) [Google Landmark Retrieval Challenge.pdf]
-
 ## Authors
 * Andrew Pankiv
 * Orest Rehusevich
