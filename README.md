@@ -25,4 +25,4 @@ After comparison of every pair, we get a binary array of the length M. Distance 
 
 ## Authors
 * Andrew Pankiv
-* Orest Rehusevich
+* Orest Rehusevych
